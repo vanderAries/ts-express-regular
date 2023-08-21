@@ -1,0 +1,20 @@
+{
+  "name": "ts-express-regular",
+  "version": "1.0.0",
+  "description": "TypeScript, Express, Regular Server, SQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanderAries/ts-express-regular.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vanderAries/ts-express-regular/issues"
+  },
+  "homepage": "https://github.com/vanderAries/ts-express-regular#readme"
+}
