@@ -2,9 +2,13 @@
   "name": "ts-express-regular",
   "version": "1.0.0",
   "description": "TypeScript, Express, Regular Server, SQL",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts",
+    "lint": "eslint --fix --ignore-path .eslintignore --ext .js,.ts .",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -13,8 +17,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vanderAries/ts-express-regular/issues"
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.5.1",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   },
-  "homepage": "https://github.com/vanderAries/ts-express-regular#readme"
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
