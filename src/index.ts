@@ -40,6 +40,9 @@ const port = 3000;
 
 app.use(express.json());
 
+// temporary list of tasks
+const tasks: TaskList = [];
+
 // Application routing
 // Create new Task
 app.post('/tasks', (req: Request, res: Response) => {
@@ -59,30 +62,61 @@ app.post('/tasks', (req: Request, res: Response) => {
     updatedAt: new Date(),
   };
 
+  tasks.push(newTask);
+
   res.status(201).json(newTask);
 });
 
 // Get list of Tasks
 app.get('/tasks', (req: Request, res: Response) => {
-  res.status(200).json({
-    message: 'List of Tasks',
-  });
+  res.status(200).json(tasks);
 });
 
 // Get one Task
 app.get('/tasks/:taskId', (req: Request, res: Response) => {
-  res.status(200).json({
-    message: `Task with ID: ${req.params.taskId}`,
-  });
+  const { taskId } = req.params;
+  const task = tasks.find((taskRecord) => taskRecord.id === taskId);
+  if (task !== undefined) {
+    res.status(200).json(task);
+  } else {
+    const error: ErrorResponse = {
+      title: 'Not Found',
+      detail: `Task with ID: '${taskId}' was not found`,
+    };
+    res.status(404).json(error);
+  }
 });
 
 // Edit whole Task
 app.put('/tasks/:taskId', (req: Request, res: Response) => {
+  const { taskId } = req.params;
   const body = req.body as TaskRequest;
-  res.status(200).json({
-    message: `Task with ID: ${req.params.taskId} was updated`,
-    task: body,
-  });
+
+  const task = tasks.find((taskRecord) => taskRecord.id === taskId);
+  if (task !== undefined) {
+    // Create the new TaskModel object with the provided data and generated values
+    const updatedTask: TaskModel = {
+      id: task.id,
+      name: body.name,
+      description: body.description,
+      category: body.category,
+      state: body.state,
+      createdAt: task.createdAt,
+      updatedAt: new Date(),
+    };
+
+    const taskIndex = tasks.indexOf(task);
+
+    tasks[taskIndex] = updatedTask;
+
+    res.status(200).json(updatedTask);
+  } else {
+    const error: ErrorResponse = {
+      title: 'Not Found',
+      detail: `Task with ID: '${taskId}' was not found`,
+    };
+    res.status(404).json(error);
+  }
 });
 
 // Change Task state
@@ -96,9 +130,18 @@ app.patch('/tasks/:taskId', (req: Request, res: Response) => {
 
 // Delete Task
 app.delete('/tasks/:taskId', (req: Request, res: Response) => {
-  res.status(204).json({
-    message: `Task with ID: ${req.params.taskId} was deleted`,
-  });
+  const { taskId } = req.params;
+  const taskIndex = tasks.findIndex((taskRecord) => taskRecord.id === taskId);
+  if (taskIndex !== -1) {
+    tasks.splice(taskIndex, 1);
+    res.sendStatus(204);
+  } else {
+    const error: ErrorResponse = {
+      title: 'Not Found',
+      detail: `Task with ID: '${taskId}' was not found`,
+    };
+    res.status(404).json(error);
+  }
 });
 
 // Start server

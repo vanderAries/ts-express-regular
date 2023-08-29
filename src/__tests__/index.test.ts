@@ -82,7 +82,9 @@ describe('Tasks Endpoints', () => {
       });
       it('Should return list of Tasks', () => {
         expect(tasks).toBeInstanceOf(Array);
-        expect(tasks).toContain(newTaskResponse);
+      });
+      it('Should have new Task in Task List', () => {
+        expect(tasks).toContainEqual(newTaskResponse);
       });
     });
   });
