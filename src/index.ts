@@ -1,11 +1,12 @@
 import express, { Application, Request, Response } from 'express';
+import crypto from 'crypto';
 import fs from 'fs';
 
 // Models
 type Category = 'work' | 'home';
 type State = 'active' | 'finished';
 
-interface TaskRequest {
+export interface TaskRequest {
   name: string;
   description: string | null;
   category: Category;
@@ -16,14 +17,21 @@ interface TaskState {
   state: State;
 }
 
-interface TaskModel {
+export interface TaskModel {
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   category: Category;
   state: State;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type TaskList = TaskModel[];
+
+export interface ErrorResponse {
+  title: string;
+  detail: string;
 }
 
 // Boot express
@@ -37,10 +45,21 @@ app.use(express.json());
 app.post('/tasks', (req: Request, res: Response) => {
   const body = req.body as TaskRequest;
 
-  res.status(201).json({
-    message: 'New Task was created',
-    task: body,
-  });
+  // Generate ID for the new task
+  const id = crypto.randomUUID();
+
+  // Create the new TaskModel object with the provided data and generated values
+  const newTask: TaskModel = {
+    id,
+    name: body.name,
+    description: body.description,
+    category: body.category,
+    state: body.state,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  res.status(201).json(newTask);
 });
 
 // Get list of Tasks
