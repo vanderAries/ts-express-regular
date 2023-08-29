@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from 'express';
+import { checkSchema, validationResult } from 'express-validator';
 import crypto from 'crypto';
 import fs from 'fs';
 
@@ -12,6 +13,41 @@ export interface TaskRequest {
   category: Category;
   state: State;
 }
+
+const taskValidationSchema = {
+  name: {
+    exists: {
+      errorMessage: 'Task name is required',
+    },
+    isString: {
+      errorMessage: 'Task name should be string',
+    },
+  },
+  description: {
+    optional: true,
+    isString: {
+      errorMessage: 'Task description should be string',
+    },
+  },
+  category: {
+    exists: {
+      errorMessage: 'Task category is required',
+    },
+    isIn: {
+      options: [['work', 'home']],
+      errorMessage: 'Invalid category. Has to be \'work\' or \'home\'',
+    },
+  },
+  state: {
+    exists: {
+      errorMessage: 'Task state is required',
+    },
+    isIn: {
+      options: [['active', 'finished']],
+      errorMessage: 'Invalid state. Has to be \'active\' or \'finished\'',
+    },
+  },
+};
 
 interface TaskState {
   state: State;
@@ -32,6 +68,7 @@ export type TaskList = TaskModel[];
 export interface ErrorResponse {
   title: string;
   detail: string;
+  errors?: object[];
 }
 
 // Boot express
@@ -45,8 +82,18 @@ const tasks: TaskList = [];
 
 // Application routing
 // Create new Task
-app.post('/tasks', (req: Request, res: Response) => {
-  const body = req.body as TaskRequest;
+app.post('/tasks', checkSchema(taskValidationSchema), (req: Request, res: Response) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const error: ErrorResponse = {
+      title: 'Validation Error',
+      detail: 'Provided request body is invalid, check \'errors\' for more info.',
+      errors: result.array(),
+    };
+    res.status(400).json(error);
+  }
+
+  const taskInput = req.body as TaskRequest;
 
   // Generate ID for the new task
   const id = crypto.randomUUID();
@@ -54,10 +101,10 @@ app.post('/tasks', (req: Request, res: Response) => {
   // Create the new TaskModel object with the provided data and generated values
   const newTask: TaskModel = {
     id,
-    name: body.name,
-    description: body.description,
-    category: body.category,
-    state: body.state,
+    name: taskInput.name,
+    description: taskInput.description,
+    category: taskInput.category,
+    state: taskInput.state,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -81,26 +128,36 @@ app.get('/tasks/:taskId', (req: Request, res: Response) => {
   } else {
     const error: ErrorResponse = {
       title: 'Not Found',
-      detail: `Task with ID: '${taskId}' was not found`,
+      detail: `Task with ID: '${taskId}' was not found.`,
     };
     res.status(404).json(error);
   }
 });
 
 // Edit whole Task
-app.put('/tasks/:taskId', (req: Request, res: Response) => {
+app.put('/tasks/:taskId', checkSchema(taskValidationSchema), (req: Request, res: Response) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    const error: ErrorResponse = {
+      title: 'Validation Error',
+      detail: 'Provided request body is invalid, check \'errors\' for more info.',
+      errors: result.array(),
+    };
+    res.status(400).json(error);
+  }
+
   const { taskId } = req.params;
-  const body = req.body as TaskRequest;
+  const taskInput = req.body as TaskRequest;
 
   const task = tasks.find((taskRecord) => taskRecord.id === taskId);
   if (task !== undefined) {
     // Create the new TaskModel object with the provided data and generated values
     const updatedTask: TaskModel = {
       id: task.id,
-      name: body.name,
-      description: body.description,
-      category: body.category,
-      state: body.state,
+      name: taskInput.name,
+      description: taskInput.description,
+      category: taskInput.category,
+      state: taskInput.state,
       createdAt: task.createdAt,
       updatedAt: new Date(),
     };
@@ -113,7 +170,7 @@ app.put('/tasks/:taskId', (req: Request, res: Response) => {
   } else {
     const error: ErrorResponse = {
       title: 'Not Found',
-      detail: `Task with ID: '${taskId}' was not found`,
+      detail: `Task with ID: '${taskId}' was not found.`,
     };
     res.status(404).json(error);
   }
@@ -121,10 +178,10 @@ app.put('/tasks/:taskId', (req: Request, res: Response) => {
 
 // Change Task state
 app.patch('/tasks/:taskId', (req: Request, res: Response) => {
-  const body = req.body as TaskState;
+  const taskInput = req.body as TaskState;
   res.status(200).json({
-    message: `Task with ID: ${req.params.taskId} was updated`,
-    task: body,
+    message: `Task with ID: ${req.params.taskId} was updated.`,
+    task: taskInput,
   });
 });
 
@@ -138,7 +195,7 @@ app.delete('/tasks/:taskId', (req: Request, res: Response) => {
   } else {
     const error: ErrorResponse = {
       title: 'Not Found',
-      detail: `Task with ID: '${taskId}' was not found`,
+      detail: `Task with ID: '${taskId}' was not found.`,
     };
     res.status(404).json(error);
   }
