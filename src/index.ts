@@ -36,6 +36,7 @@ app.use(express.json());
 // Create new Task
 app.post('/tasks', (req: Request, res: Response) => {
   const body = req.body as TaskRequest;
+
   res.status(201).json({
     message: 'New Task was created',
     task: body,
@@ -82,6 +83,8 @@ app.delete('/tasks/:taskId', (req: Request, res: Response) => {
 });
 
 // Start server
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is listening on port http://localhost:${port}`);
 });
+
+export default server;

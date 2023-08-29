@@ -1,12 +1,20 @@
 {
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  },
   "compilerOptions": {
     "lib": ["ES2023"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "target": "ES2022",
     "sourceMap": true,
-    "outDir": "dist",
-    "strict": true,
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
 }

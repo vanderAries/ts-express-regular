@@ -1,5 +1,9 @@
 /* eslint-env node */
 module.exports = {
+  env: {
+    node: true,
+    'jest/globals': true,
+  },
   extends: [
     'airbnb-base',
     'airbnb-typescript/base',
@@ -11,6 +15,6 @@ module.exports = {
     project: './tsconfig.json'
   },
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jest'],
   root: true
 };
