@@ -9,7 +9,7 @@ type State = 'active' | 'finished';
 
 export interface TaskRequest {
   name: string;
-  description: string | null;
+  description?: string;
   category: Category;
   state: State;
 }
@@ -56,7 +56,7 @@ interface TaskState {
 export interface TaskModel {
   id: string;
   name: string;
-  description: string | null;
+  description?: string;
   category: Category;
   state: State;
   createdAt: Date;
