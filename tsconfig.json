@@ -12,9 +12,8 @@
     "forceConsistentCasingInFileNames": true,
     "target": "ES2022",
     "sourceMap": true,
-    "rootDir": "./src",
     "outDir": "./dist",
     "strict": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__/**/*", "jest.config.ts"],
 }

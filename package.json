@@ -4,7 +4,7 @@
   "description": "TypeScript, Express, Regular Server, SQL",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
     "start": "nodemon ./src/index.ts",
     "lint": "eslint --fix --ignore-path .eslintignore --ext .js,.ts .",
     "format": "prettier --write .",

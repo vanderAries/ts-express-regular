@@ -1,5 +1,10 @@
-import request, { Response } from 'supertest';
-import server, { TaskRequest, TaskModel, TaskList, ErrorResponse } from '../index';
+import { Response } from 'supertest';
+import {
+  TaskRequest, TaskModel, TaskList, ErrorResponse,
+} from '../src/index';
+import {
+  postRequest, getRequest, putRequest, deleteRequest, closeConnection,
+} from './requestHelper';
 
 describe('Tasks Endpoints', () => {
   const newTask: TaskRequest = {
@@ -21,11 +26,11 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let task: TaskModel;
       beforeAll(async () => {
-        response = await request(server).post('/tasks').send(newTask);
+        response = await postRequest('/tasks', newTask);
+
         task = response.body as TaskModel;
         newTaskResponse = response.body as TaskModel;
         tempTaskId = task.id;
-        console.log('POST ID', tempTaskId);
       });
 
       it('Should return status 201', () => {
@@ -52,7 +57,7 @@ describe('Tasks Endpoints', () => {
         category: 'hobby',
       };
       beforeAll(async () => {
-        response = await request(server).post('/tasks').send(newInvalidTask);
+        response = await postRequest('/tasks', newInvalidTask);
         error = response.body as ErrorResponse;
       });
 
@@ -73,7 +78,7 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let tasks: TaskList;
       beforeAll(async () => {
-        response = await request(server).get('/tasks');
+        response = await getRequest('/tasks');
         tasks = response.body as TaskList;
       });
 
@@ -94,7 +99,7 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let task: TaskModel;
       beforeAll(async () => {
-        response = await request(server).get(`/tasks/${tempTaskId}`);
+        response = await getRequest(`/tasks/${tempTaskId}`);
         task = response.body as TaskModel;
       });
 
@@ -122,7 +127,7 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let error: ErrorResponse;
       beforeAll(async () => {
-        response = await request(server).get('/tasks/xxx');
+        response = await getRequest('/tasks/xxx');
         error = response.body as ErrorResponse;
       });
 
@@ -142,9 +147,7 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let task: TaskModel;
       beforeAll(async () => {
-        response = await request(server)
-          .put(`/tasks/${tempTaskId}`)
-          .send(updatedTask);
+        response = await putRequest(`/tasks/${tempTaskId}`, updatedTask);
         task = response.body as TaskModel;
       });
 
@@ -180,9 +183,7 @@ describe('Tasks Endpoints', () => {
         category: 'hobby',
       };
       beforeAll(async () => {
-        response = await request(server)
-          .put(`/tasks/${tempTaskId}`)
-          .send(updatedInvalidTask);
+        response = await putRequest(`/tasks/${tempTaskId}`, updatedInvalidTask);
         error = response.body as ErrorResponse;
       });
 
@@ -200,9 +201,7 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let error: ErrorResponse;
       beforeAll(async () => {
-        response = await request(server)
-          .put('/tasks/xxx')
-          .send(updatedTask);
+        response = await putRequest('/tasks/xxx', updatedTask);
         error = response.body as ErrorResponse;
       });
 
@@ -220,7 +219,7 @@ describe('Tasks Endpoints', () => {
     describe('Success', () => {
       let response: Response;
       beforeAll(async () => {
-        response = await request(server).delete(`/tasks/${tempTaskId}`);
+        response = await deleteRequest(`/tasks/${tempTaskId}`);
       });
 
       it('Should return status 204', () => {
@@ -232,7 +231,7 @@ describe('Tasks Endpoints', () => {
       let response: Response;
       let error: ErrorResponse;
       beforeAll(async () => {
-        response = await request(server).delete('/tasks/xxx');
+        response = await deleteRequest('/tasks/xxx');
         error = response.body as ErrorResponse;
       });
 
@@ -248,6 +247,4 @@ describe('Tasks Endpoints', () => {
   });
 });
 
-server.close(() => {
-  console.log('Server is closed');
-});
+closeConnection();
