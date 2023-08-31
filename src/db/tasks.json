@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "name": "Task 1",
+    "description": "Desc1",
+    "category": "home",
+    "state": "active",
+    "createdAt": "123",
+    "updatedAt": "123"
+  },
+  {
+    "id": "2",
+    "name": "Task 2",
+    "description": "Desc2",
+    "category": "work",
+    "state": "finished",
+    "createdAt": "123",
+    "updatedAt": "123"
+  }
+]
