@@ -36,18 +36,11 @@ describe('Validation Middleware', () => {
     expect(validationError.isEmpty()).toBeTruthy();
   });
 
-  it.todo('Should return \'name\' type error', async () => {
-  });
-  it.todo('Should return \'name\' required parameter error', async () => {
-  });
-  it.todo('Should return \'description\' type error', async () => {
-  });
-  it.todo('Should return \'category\' required parameter error', async () => {
-  });
-  it.todo('Should return \'category\' enum error', async () => {
-  });
-  it.todo('Should return \'state\' required parameter error', async () => {
-  });
-  it.todo('Should return \'state\' enum error', async () => {
-  });
+  it.todo('Should return \'name\' type error');
+  it.todo('Should return \'name\' required parameter error');
+  it.todo('Should return \'description\' type error');
+  it.todo('Should return \'category\' required parameter error');
+  it.todo('Should return \'category\' enum error');
+  it.todo('Should return \'state\' required parameter error');
+  it.todo('Should return \'state\' enum error');
 });
