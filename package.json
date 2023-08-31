@@ -2,10 +2,10 @@
   "name": "ts-express-regular",
   "version": "1.0.0",
   "description": "TypeScript, Express, Regular Server, SQL",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc --project tsconfig.build.json",
-    "start": "nodemon ./src/index.ts",
+    "start": "nodemon ./src/server.ts",
     "lint": "eslint --fix --ignore-path .eslintignore --ext .js,.ts .",
     "format": "prettier --write .",
     "test": "jest --coverage --detectOpenHandles"

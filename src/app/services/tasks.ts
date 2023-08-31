@@ -37,8 +37,8 @@ const createTask = (taskInput: TaskRequest) => {
     description: taskInput.description,
     category: taskInput.category,
     state: taskInput.state,
-    createdAt: Date(),
-    updatedAt: Date(),
+    createdAt: `${Date.now()}`,
+    updatedAt: `${Date.now()}`,
   };
 
   tasks.push(newTask);
@@ -50,28 +50,41 @@ const getAllTasks = (): TaskModel[] => readTasksFromFile();
 
 const getTaskById = (taskId: string): TaskModel | undefined => {
   const tasks = readTasksFromFile();
-  return tasks.find((task) => task.id === taskId);
+  return tasks.find((taskRecord) => taskRecord.id === taskId);
 };
 
 const updateTask = (taskId: string, taskInput: TaskRequest) => {
   const tasks = readTasksFromFile();
-  const taskIndex = tasks.findIndex((task) => task.id === taskId);
+  const task = tasks.find((taskRecord) => taskRecord.id === taskId);
 
-  if (taskIndex === -1) {
-    return null;
+  if (task === undefined) {
+    return undefined;
   }
 
-  tasks[taskIndex] = { ...updatedTask, id: taskId };
+  // Create the new TaskModel object with the provided data and generated values
+  const updatedTask: TaskModel = {
+    id: task.id,
+    name: taskInput.name,
+    description: taskInput.description,
+    category: taskInput.category,
+    state: taskInput.state,
+    createdAt: task.createdAt,
+    updatedAt: `${Date.now()}`,
+  };
+
+  const taskIndex = tasks.indexOf(task);
+
+  tasks[taskIndex] = updatedTask;
   writeTasksToFile(tasks);
-  return tasks[taskIndex];
+  return updatedTask;
 };
 
 const deleteTask = (taskId: string) => {
   const tasks = readTasksFromFile();
-  const taskIndex = tasks.findIndex((task) => task.id === taskId);
+  const taskIndex = tasks.findIndex((taskRecord) => taskRecord.id === taskId);
 
   if (taskIndex === -1) {
-    return null;
+    return undefined;
   }
 
   const deletedTask = tasks.splice(taskIndex, 1)[0];

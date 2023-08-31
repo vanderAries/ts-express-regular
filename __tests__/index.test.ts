@@ -1,7 +1,7 @@
 import { Response } from 'supertest';
 import { ErrorResponse } from '../src/app/models/errors';
 
-import { TaskRequest, TaskModel, TaskList } from '../src/app/models/tasks';
+import { TaskRequest, TaskModel } from '../src/app/models/tasks';
 
 import {
   postRequest,
@@ -48,8 +48,8 @@ describe('Tasks Endpoints', () => {
         expect(task.description).toEqual(newTask.description);
         expect(task.category).toEqual(newTask.category);
         expect(task.state).toEqual(newTask.state);
-        expect(new Date(task.createdAt)).toBeInstanceOf(Date);
-        expect(new Date(task.updatedAt)).toBeInstanceOf(Date);
+        expect(typeof task.createdAt).toBe('string');
+        expect(typeof task.updatedAt).toBe('string');
       });
     });
 
@@ -81,10 +81,10 @@ describe('Tasks Endpoints', () => {
   describe('GET /tasks', () => {
     describe('Success', () => {
       let response: Response;
-      let tasks: TaskList;
+      let tasks: TaskModel[];
       beforeAll(async () => {
         response = await getRequest('/tasks');
-        tasks = response.body as TaskList;
+        tasks = response.body as TaskModel[];
       });
 
       it('Should return status 200', () => {
@@ -122,9 +122,8 @@ describe('Tasks Endpoints', () => {
         expect(task.description).toEqual(newTask.description);
         expect(task.category).toEqual(newTask.category);
         expect(task.state).toEqual(newTask.state);
-        expect(new Date(task.createdAt)).toBeInstanceOf(Date);
-        expect(new Date(task.updatedAt)).toBeInstanceOf(Date);
-        // TODO
+        expect(typeof task.createdAt).toBe('string');
+        expect(typeof task.updatedAt).toBe('string');
       });
     });
 
@@ -170,8 +169,8 @@ describe('Tasks Endpoints', () => {
         expect(task.description).toEqual(updatedTask.description);
         expect(task.category).toEqual(updatedTask.category);
         expect(task.state).toEqual(updatedTask.state);
-        expect(new Date(task.createdAt)).toBeInstanceOf(Date);
-        expect(new Date(task.updatedAt)).toBeInstanceOf(Date);
+        expect(typeof task.createdAt).toBe('string');
+        expect(typeof task.updatedAt).toBe('string');
       });
       it('Should have Task with correct "updatedAt"', () => {
         expect(task.createdAt).toEqual(newTaskResponse.createdAt);
