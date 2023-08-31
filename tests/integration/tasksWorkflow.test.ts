@@ -1,7 +1,7 @@
 import { Response } from 'supertest';
-import { ErrorResponse } from '../src/app/models/errors';
+import { ErrorResponse } from '../../src/app/models/errors';
 
-import { TaskRequest, TaskModel } from '../src/app/models/tasks';
+import { TaskRequest, TaskModel } from '../../src/app/models/tasks';
 
 import {
   postRequest,
@@ -9,7 +9,7 @@ import {
   putRequest,
   deleteRequest,
   closeConnection,
-} from './requestHelper';
+} from './utils/requestHelper';
 
 describe('Tasks Endpoints', () => {
   const newTask: TaskRequest = {
@@ -71,9 +71,8 @@ describe('Tasks Endpoints', () => {
       });
       it('Should return Validation Error', () => {
         expect(error).toBeInstanceOf(Object);
-        expect(error).toHaveProperty('title');
+        expect(error.title).toEqual('Validation Error');
         expect(error).toHaveProperty('detail');
-        // TODO
       });
     });
   });
@@ -140,7 +139,7 @@ describe('Tasks Endpoints', () => {
       });
       it('Should return Not Found Error', () => {
         expect(error).toBeInstanceOf(Object);
-        expect(error).toHaveProperty('title');
+        expect(error.title).toEqual('Not Found');
         expect(error).toHaveProperty('detail');
       });
     });
@@ -196,7 +195,7 @@ describe('Tasks Endpoints', () => {
       });
       it('Should return Validation Error', () => {
         expect(error).toBeInstanceOf(Object);
-        expect(error).toHaveProperty('title');
+        expect(error.title).toEqual('Validation Error');
         expect(error).toHaveProperty('detail');
       });
     });
@@ -214,7 +213,7 @@ describe('Tasks Endpoints', () => {
       });
       it('Should return Not Found Error', () => {
         expect(error).toBeInstanceOf(Object);
-        expect(error).toHaveProperty('title');
+        expect(error.title).toEqual('Not Found');
         expect(error).toHaveProperty('detail');
       });
     });
@@ -244,7 +243,7 @@ describe('Tasks Endpoints', () => {
       });
       it('Should return Not Found Error', () => {
         expect(error).toBeInstanceOf(Object);
-        expect(error).toHaveProperty('title');
+        expect(error.title).toEqual('Not Found');
         expect(error).toHaveProperty('detail');
       });
     });

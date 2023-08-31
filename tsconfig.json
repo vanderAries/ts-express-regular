@@ -16,5 +16,5 @@
     "outDir": "./dist",
     "strict": true
   },
-  "include": ["src/**/*", "__tests__/**/*", "jest.config.ts"],
+  "include": ["src/**/*", "tests/**/*", "jest.config.ts"],
 }

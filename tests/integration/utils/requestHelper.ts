@@ -1,7 +1,10 @@
 import request, { Response } from 'supertest';
-import server from '../src/server';
+import server from '../../../src/server';
 
-export async function postRequest(path: string, body: object): Promise<Response> {
+export async function postRequest(
+  path: string,
+  body: object,
+): Promise<Response> {
   const response = await request(server).post(path).send(body);
   return response;
 }
@@ -11,7 +14,10 @@ export async function getRequest(path: string): Promise<Response> {
   return response;
 }
 
-export async function putRequest(path: string, body: object): Promise<Response> {
+export async function putRequest(
+  path: string,
+  body: object,
+): Promise<Response> {
   const response = await request(server).put(path).send(body);
   return response;
 }

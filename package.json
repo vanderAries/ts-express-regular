@@ -8,7 +8,9 @@
     "start": "nodemon ./src/server.ts",
     "lint": "eslint --fix --ignore-path .eslintignore --ext .js,.ts .",
     "format": "prettier --write .",
-    "test": "jest --coverage --detectOpenHandles"
+    "test": "jest --coverage --detectOpenHandles",
+    "test:unit": "jest tests/unit --coverage",
+    "test:integration": "jest tests/integration --coverage --detectOpenHandles"
   },
   "repository": {
     "type": "git",
