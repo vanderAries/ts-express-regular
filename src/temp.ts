@@ -1,7 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import { checkSchema, validationResult } from 'express-validator';
 import crypto from 'crypto';
-import fs from 'fs';
 
 // Models
 type Category = 'work' | 'home';

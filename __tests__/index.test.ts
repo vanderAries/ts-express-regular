@@ -1,9 +1,14 @@
 import { Response } from 'supertest';
+import { ErrorResponse } from '../src/app/models/errors';
+
+import { TaskRequest, TaskModel, TaskList } from '../src/app/models/tasks';
+
 import {
-  TaskRequest, TaskModel, TaskList, ErrorResponse,
-} from '../src/index';
-import {
-  postRequest, getRequest, putRequest, deleteRequest, closeConnection,
+  postRequest,
+  getRequest,
+  putRequest,
+  deleteRequest,
+  closeConnection,
 } from './requestHelper';
 
 describe('Tasks Endpoints', () => {

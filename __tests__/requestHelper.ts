@@ -1,5 +1,5 @@
 import request, { Response } from 'supertest';
-import server from '../src/index';
+import server from '../src/server';
 
 export async function postRequest(path: string, body: object): Promise<Response> {
   const response = await request(server).post(path).send(body);
