@@ -19,7 +19,7 @@ const writeTasksToFile = (tasks: TaskModel[]) => {
   try {
     fs.writeFileSync(dbFilePath, JSON.stringify(tasks, null, 2));
   } catch (error) {
-    console.error('Error writing tasks to file:', error);
+    console.log('Error writing tasks to file:', error);
     throw error;
   }
 };
@@ -98,6 +98,8 @@ const taskService = {
   createTask,
   updateTask,
   deleteTask,
+  readTasksFromFile,
+  writeTasksToFile,
 };
 
 export default taskService;
