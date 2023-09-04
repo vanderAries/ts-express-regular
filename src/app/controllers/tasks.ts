@@ -23,7 +23,7 @@ const createTask = (req: Request, res: Response) => {
     const newTask = taskService.createTask(taskInput);
     return res.status(201).json(newTask);
   } catch (error) {
-    console.log('Error in taskController:', error);
+    console.log('Error in taskController');
     const errorRes: ErrorResponse = {
       title: 'Internal Server Error',
       detail:
@@ -38,7 +38,7 @@ const getAllTasks = (req: Request, res: Response) => {
     const tasks = taskService.getAllTasks();
     return res.status(200).json(tasks);
   } catch (error) {
-    console.log('Error in taskController:', error);
+    console.log('Error in taskController');
     const errorRes: ErrorResponse = {
       title: 'Internal Server Error',
       detail:
@@ -61,7 +61,7 @@ const getTaskById = (req: Request, res: Response) => {
     }
     return res.status(200).json(task);
   } catch (error) {
-    console.log('Error in taskController:', error);
+    console.log('Error in taskController');
     const errorRes: ErrorResponse = {
       title: 'Internal Server Error',
       detail:
@@ -100,7 +100,7 @@ const updateTask = (req: Request, res: Response) => {
 
     return res.status(200).json(updatedTask);
   } catch (error) {
-    console.log('Error in taskController:', error);
+    console.log('Error in taskController');
     const errorRes: ErrorResponse = {
       title: 'Internal Server Error',
       detail:
@@ -126,7 +126,7 @@ const deleteTask = (req: Request, res: Response) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    console.log('Error in taskController:', error);
+    console.log('Error in taskController');
     const errorRes: ErrorResponse = {
       title: 'Internal Server Error',
       detail:

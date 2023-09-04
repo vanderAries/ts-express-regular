@@ -10,7 +10,7 @@ const readTasksFromFile = (): TaskModel[] => {
     const data = fs.readFileSync(dbFilePath, 'utf8');
     return JSON.parse(data) as TaskModel[];
   } catch (error) {
-    console.log('Error reading tasks from file:', error);
+    console.log('Error reading tasks from file');
     throw error;
   }
 };
@@ -19,7 +19,7 @@ const writeTasksToFile = (tasks: TaskModel[]) => {
   try {
     fs.writeFileSync(dbFilePath, JSON.stringify(tasks, null, 2));
   } catch (error) {
-    console.log('Error writing tasks to file:', error);
+    console.log('Error writing tasks to file');
     throw error;
   }
 };
